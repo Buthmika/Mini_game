@@ -16,6 +16,7 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+GRAY = (128, 128, 128)
 
 # Screen setup
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -27,14 +28,21 @@ clock = pygame.time.Clock()
 # Load assets
 car_width = 50
 car_height = 100
-player_car = pygame.Surface((car_width, car_height))
-player_car.fill(BLUE)
 
-enemy_car = pygame.Surface((car_width, car_height))
-enemy_car.fill(RED)
+# Draw detailed player car
+def draw_player_car(x, y):
+    pygame.draw.rect(screen, BLUE, (x, y, car_width, car_height))  # Car body
+    pygame.draw.rect(screen, BLACK, (x + 10, y + 10, 10, 20))  # Left headlight
+    pygame.draw.rect(screen, BLACK, (x + 30, y + 10, 10, 20))  # Right headlight
+    pygame.draw.circle(screen, BLACK, (x + 15, y + 90), 10)  # Left wheel
+    pygame.draw.circle(screen, BLACK, (x + 35, y + 90), 10)  # Right wheel
 
-star = pygame.Surface((10, 10))
-star.fill(YELLOW)
+# Draw detailed enemy car
+def draw_enemy_car(x, y):
+    pygame.draw.rect(screen, RED, (x, y, car_width, car_height))  # Car body
+    pygame.draw.rect(screen, GRAY, (x + 10, y + 10, 30, 20))  # Windshield
+    pygame.draw.circle(screen, BLACK, (x + 15, y + 90), 10)  # Left wheel
+    pygame.draw.circle(screen, BLACK, (x + 35, y + 90), 10)  # Right wheel
 
 # Functions
 def draw_text(text, size, color, x, y):
@@ -49,7 +57,7 @@ def animate_stars(stars):
         if star_pos[1] > SCREEN_HEIGHT:
             star_pos[1] = -10
             star_pos[0] = random.randint(0, SCREEN_WIDTH - 10)
-        screen.blit(star, (star_pos[0], star_pos[1]))
+        pygame.draw.circle(screen, YELLOW, (star_pos[0], star_pos[1]), 2)
 
 # Spawn multiple enemies
 def spawn_enemies(enemy_list, enemy_speed):
@@ -58,7 +66,7 @@ def spawn_enemies(enemy_list, enemy_speed):
         if enemy[1] > SCREEN_HEIGHT:
             enemy[1] = -car_height
             enemy[0] = random.randint(0, SCREEN_WIDTH - car_width)
-        screen.blit(enemy_car, (enemy[0], enemy[1]))
+        draw_enemy_car(enemy[0], enemy[1])
 
 # Check for collisions with multiple enemies
 def check_collision(player_x, player_y, enemy_list):
@@ -112,7 +120,7 @@ def game_loop():
             running = False
 
         # Draw player car
-        screen.blit(player_car, (player_x, player_y))
+        draw_player_car(player_x, player_y)
 
         # Draw score
         draw_text(f"Score: {score}", 30, BLACK, 10, 10)
