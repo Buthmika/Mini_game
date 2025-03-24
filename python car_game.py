@@ -39,7 +39,12 @@ def draw_player_car(x, y):
 
 # Draw detailed enemy car
 def draw_enemy_car(x, y):
-    
+    pygame.draw.rect(screen, RED, (x, y, car_width, car_height))  # Car body
+    pygame.draw.rect(screen, GRAY, (x + 10, y + 10, 30, 20))  # Windshield
+    pygame.draw.circle(screen, BLACK, (x + 15, y + 90), 10)  # Left wheel
+    pygame.draw.circle(screen, BLACK, (x + 35, y + 90), 10)  # Right wheel
+
+# Functions
 def draw_text(text, size, color, x, y):
     font = pygame.font.SysFont("Arial", size)
     text_surface = font.render(text, True, color)
