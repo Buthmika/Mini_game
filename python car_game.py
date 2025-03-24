@@ -31,12 +31,7 @@ car_height = 100
 
 # Draw detailed player car
 def draw_player_car(x, y):
-    pygame.draw.rect(screen, BLUE, (x, y, car_width, car_height))  # Car body
-    pygame.draw.rect(screen, BLACK, (x + 10, y + 10, 10, 20))  # Left headlight
-    pygame.draw.rect(screen, BLACK, (x + 30, y + 10, 10, 20))  # Right headlight
-    pygame.draw.circle(screen, BLACK, (x + 15, y + 90), 10)  # Left wheel
-    pygame.draw.circle(screen, BLACK, (x + 35, y + 90), 10)  # Right wheel
-
+    
 # Draw detailed enemy car
 def draw_enemy_car(x, y):
     pygame.draw.rect(screen, RED, (x, y, car_width, car_height))  # Car body
