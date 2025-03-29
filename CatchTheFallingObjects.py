@@ -81,10 +81,7 @@ while running:
         apple_color = random.choice(apple_colors)  # Change apple color
     
     # Reset apple if it falls
-    if apple_y > HEIGHT:
-        missed += 1
-        apple_x = random.randint(apple_radius, WIDTH - apple_radius)
-        apple_y = 0
+    
     
     # Check game over condition
     if missed >= max_missed:
