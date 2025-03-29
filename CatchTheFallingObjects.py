@@ -62,19 +62,15 @@ while running:
         apple_y = 0
         apple_speed += 0.2  # Increase speed after each catch
     
-    # Reset apple if it falls
     if apple_y > HEIGHT:
         missed += 1
         apple_x = random.randint(apple_radius, WIDTH - apple_radius)
         apple_y = 0
     
-    # Draw basket
     pygame.draw.rect(screen, GREEN, (basket_x, basket_y, basket_width, basket_height))
     
-    # Draw apple
     pygame.draw.circle(screen, RED, (apple_x, apple_y), apple_radius)
     
-    # Display score and missed count
     score_text = font.render(f"Score: {score}", True, (0, 0, 0))
     missed_text = font.render(f"Missed: {missed}", True, YELLOW)
     screen.blit(score_text, (10, 10))
