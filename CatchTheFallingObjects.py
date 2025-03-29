@@ -29,3 +29,34 @@ apple_speed = 5
 # Score
 score = 0
 font = pygame.font.Font(None, 36)
+# Game loop
+running = True
+while running:
+    pygame.time.delay(30)
+    screen.fill(WHITE)
+    
+    # Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    
+    # Move basket
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and basket_x > 0:
+        basket_x -= basket_speed
+    if keys[pygame.K_RIGHT] and basket_x < WIDTH - basket_width:
+        basket_x += basket_speed
+    
+    # Move apple
+    apple_y += apple_speed
+    
+    # Check if apple is caught
+    if basket_y < apple_y + apple_radius and basket_x < apple_x < basket_x + basket_width:
+        score += 1
+        apple_x = random.randint(apple_radius, WIDTH - apple_radius)
+        apple_y = 0
+    
+    # Reset apple if it falls
+    if apple_y > HEIGHT:
+        apple_x = random.randint(apple_radius, WIDTH - apple_radius)
+        apple_y = 0
