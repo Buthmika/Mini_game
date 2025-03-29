@@ -60,3 +60,17 @@ while running:
     if apple_y > HEIGHT:
         apple_x = random.randint(apple_radius, WIDTH - apple_radius)
         apple_y = 0
+
+ # Draw basket
+    pygame.draw.rect(screen, BLUE, (basket_x, basket_y, basket_width, basket_height))
+    
+    # Draw apple
+    pygame.draw.circle(screen, RED, (apple_x, apple_y), apple_radius)
+    
+    # Display score
+    score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+    screen.blit(score_text, (10, 10))
+    
+    pygame.display.update()
+    
+pygame.quit()
