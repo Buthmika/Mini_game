@@ -22,7 +22,7 @@ basket_width = 120
 basket_height = 20
 basket_x = WIDTH // 2 - basket_width // 2
 basket_y = HEIGHT - 50
-basket_speed = 12
+basket_speed = 14  # Increased speed
 
 # Apple properties
 apple_radius = 15
@@ -37,6 +37,10 @@ font = pygame.font.Font(None, 36)
 
 # Game over condition
 max_missed = 5
+
+# New feature: Changing apple color every time it's caught
+apple_colors = [RED, BLUE, YELLOW, GREEN]
+apple_color = random.choice(apple_colors)
 
 def show_game_over():
     screen.fill(WHITE)
@@ -74,6 +78,7 @@ while running:
         apple_x = random.randint(apple_radius, WIDTH - apple_radius)
         apple_y = 0
         apple_speed += 0.2  # Increase speed after each catch
+        apple_color = random.choice(apple_colors)  # Change apple color
     
     # Reset apple if it falls
     if apple_y > HEIGHT:
@@ -90,7 +95,7 @@ while running:
     pygame.draw.rect(screen, GREEN, (basket_x, basket_y, basket_width, basket_height))
     
     # Draw apple
-    pygame.draw.circle(screen, RED, (apple_x, apple_y), apple_radius)
+    pygame.draw.circle(screen, apple_color, (apple_x, apple_y), apple_radius)
     
     # Display score and missed count
     score_text = font.render(f"Score: {score}", True, (0, 0, 0))
