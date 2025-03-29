@@ -14,13 +14,14 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
 
 # Basket properties
-basket_width = 100
+basket_width = 120
 basket_height = 20
 basket_x = WIDTH // 2 - basket_width // 2
 basket_y = HEIGHT - 50
-basket_speed = 10
+basket_speed = 12
 
 # Apple properties
 apple_radius = 15
@@ -30,6 +31,7 @@ apple_speed = 6
 
 # Score
 score = 0
+missed = 0
 font = pygame.font.Font(None, 36)
 
 # Game loop
@@ -62,6 +64,7 @@ while running:
     
     # Reset apple if it falls
     if apple_y > HEIGHT:
+        missed += 1
         apple_x = random.randint(apple_radius, WIDTH - apple_radius)
         apple_y = 0
     
@@ -71,9 +74,11 @@ while running:
     # Draw apple
     pygame.draw.circle(screen, RED, (apple_x, apple_y), apple_radius)
     
-    # Display score
+    # Display score and missed count
     score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+    missed_text = font.render(f"Missed: {missed}", True, YELLOW)
     screen.blit(score_text, (10, 10))
+    screen.blit(missed_text, (10, 40))
     
     pygame.display.update()
     
