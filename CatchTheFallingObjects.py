@@ -15,6 +15,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 YELLOW = (255, 255, 0)
+BLACK = (0, 0, 0)
 
 # Basket properties
 basket_width = 120
@@ -33,6 +34,18 @@ apple_speed = 6
 score = 0
 missed = 0
 font = pygame.font.Font(None, 36)
+
+# Game over condition
+max_missed = 5
+
+def show_game_over():
+    screen.fill(WHITE)
+    game_over_text = font.render("GAME OVER", True, BLACK)
+    final_score_text = font.render(f"Final Score: {score}", True, BLACK)
+    screen.blit(game_over_text, (WIDTH // 2 - 60, HEIGHT // 2 - 20))
+    screen.blit(final_score_text, (WIDTH // 2 - 80, HEIGHT // 2 + 20))
+    pygame.display.update()
+    pygame.time.delay(2000)
 
 # Game loop
 running = True
@@ -62,17 +75,26 @@ while running:
         apple_y = 0
         apple_speed += 0.2  # Increase speed after each catch
     
+    # Reset apple if it falls
     if apple_y > HEIGHT:
         missed += 1
         apple_x = random.randint(apple_radius, WIDTH - apple_radius)
         apple_y = 0
     
+    # Check game over condition
+    if missed >= max_missed:
+        show_game_over()
+        running = False
+    
+    # Draw basket
     pygame.draw.rect(screen, GREEN, (basket_x, basket_y, basket_width, basket_height))
     
+    # Draw apple
     pygame.draw.circle(screen, RED, (apple_x, apple_y), apple_radius)
     
+    # Display score and missed count
     score_text = font.render(f"Score: {score}", True, (0, 0, 0))
-    missed_text = font.render(f"Missed: {missed}", True, YELLOW)
+    missed_text = font.render(f"Missed: {missed}/{max_missed}", True, YELLOW)
     screen.blit(score_text, (10, 10))
     screen.blit(missed_text, (10, 40))
     
