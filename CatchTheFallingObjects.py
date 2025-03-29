@@ -98,10 +98,7 @@ while running:
     pygame.draw.circle(screen, apple_color, (apple_x, apple_y), apple_radius)
     
     # Display score and missed count
-    score_text = font.render(f"Score: {score}", True, (0, 0, 0))
-    missed_text = font.render(f"Missed: {missed}/{max_missed}", True, YELLOW)
-    screen.blit(score_text, (10, 10))
-    screen.blit(missed_text, (10, 40))
+   
     
     pygame.display.update()
     
