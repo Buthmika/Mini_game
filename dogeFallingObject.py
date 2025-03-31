@@ -15,6 +15,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
 
 # Player settings
 player_size = 50
@@ -27,6 +28,7 @@ object_size = 30
 object_speed = 3
 objects = []
 powerups = []
+speed_boosts = []
 
 # Font for score display
 font = pygame.font.Font(None, 36)
@@ -35,6 +37,11 @@ font = pygame.font.Font(None, 36)
 running = True
 clock = pygame.time.Clock()
 score = 0
+
+# Timer for speed boost
+temp_speed = player_speed
+boost_active = False
+boost_timer = 0
 
 def draw_text(text, x, y, color=BLACK):
     label = font.render(text, True, color)
@@ -51,9 +58,9 @@ while running:
     # Player movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and player_x > 0:
-        player_x -= player_speed
+        player_x -= temp_speed
     if keys[pygame.K_RIGHT] and player_x < WIDTH - player_size:
-        player_x += player_speed
+        player_x += temp_speed
     
     # Spawn falling objects
     if random.randint(1, 20) == 1:
@@ -62,6 +69,10 @@ while running:
     # Spawn power-ups
     if random.randint(1, 150) == 1:
         powerups.append([random.randint(0, WIDTH - object_size), 0])
+    
+    # Spawn speed boosts
+    if random.randint(1, 200) == 1:
+        speed_boosts.append([random.randint(0, WIDTH - object_size), 0])
     
     # Move falling objects
     for obj in objects:
@@ -72,6 +83,11 @@ while running:
     for powerup in powerups:
         powerup[1] += object_speed // 2  # Power-ups fall slower
         pygame.draw.rect(screen, GREEN, (powerup[0], powerup[1], object_size, object_size))
+    
+    # Move speed boosts
+    for boost in speed_boosts:
+        boost[1] += object_speed // 2  # Speed boosts fall slower
+        pygame.draw.rect(screen, YELLOW, (boost[0], boost[1], object_size, object_size))
     
     # Collision detection for objects
     for obj in objects[:]:
@@ -88,6 +104,21 @@ while running:
         elif (player_x < powerup[0] < player_x + player_size or player_x < powerup[0] + object_size < player_x + player_size) and powerup[1] + object_size > player_y:
             powerups.remove(powerup)
             score += 5  # Power-ups increase score
+    
+    # Collision detection for speed boosts
+    for boost in speed_boosts[:]:
+        if boost[1] > HEIGHT:
+            speed_boosts.remove(boost)
+        elif (player_x < boost[0] < player_x + player_size or player_x < boost[0] + object_size < player_x + player_size) and boost[1] + object_size > player_y:
+            speed_boosts.remove(boost)
+            temp_speed = player_speed * 2  # Double speed
+            boost_active = True
+            boost_timer = pygame.time.get_ticks()
+    
+    # Handle speed boost timer
+    if boost_active and pygame.time.get_ticks() - boost_timer > 5000:  # 5 seconds duration
+        temp_speed = player_speed
+        boost_active = False
     
     # Draw player
     pygame.draw.rect(screen, BLUE, (player_x, player_y, player_size, player_size))
