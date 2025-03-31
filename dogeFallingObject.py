@@ -47,7 +47,11 @@ while running:
             running = False
     
     # Player movement
-   
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player_x > 0:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT] and player_x < WIDTH - player_size:
+        player_x += player_speed
     
     # Spawn falling objects
     if random.randint(1, 20) == 1:  # Increased chance to spawn objects
