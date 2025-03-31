@@ -17,3 +17,12 @@ player_size = 50
 player_x = WIDTH // 2 - player_size // 2
 player_y = HEIGHT - 70
 player_speed = 5
+# Falling object settings
+object_size = 30
+object_speed = 3
+objects = []
+
+# Game loop
+running = True
+clock = pygame.time.Clock()
+score = 0
