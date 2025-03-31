@@ -14,6 +14,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
 
 # Player settings
 player_size = 50
@@ -25,6 +26,7 @@ player_speed = 7
 object_size = 30
 object_speed = 3
 objects = []
+powerups = []
 
 # Font for score display
 font = pygame.font.Font(None, 36)
@@ -54,15 +56,48 @@ while running:
         player_x += player_speed
     
     # Spawn falling objects
-    if random.randint(1, 20) == 1:  # Increased chance to spawn objects
+    if random.randint(1, 20) == 1:
         objects.append([random.randint(0, WIDTH - object_size), 0])
+    
+    # Spawn power-ups
+    if random.randint(1, 150) == 1:
+        powerups.append([random.randint(0, WIDTH - object_size), 0])
     
     # Move falling objects
     for obj in objects:
         obj[1] += object_speed
         pygame.draw.rect(screen, RED, (obj[0], obj[1], object_size, object_size))
     
+    # Move power-ups
+    for powerup in powerups:
+        powerup[1] += object_speed // 2  # Power-ups fall slower
+        pygame.draw.rect(screen, GREEN, (powerup[0], powerup[1], object_size, object_size))
     
+    # Collision detection for objects
     for obj in objects[:]:
         if obj[1] > HEIGHT:
-            obj
+            objects.remove(obj)
+            score += 1  # Increase score for dodging
+        elif (player_x < obj[0] < player_x + player_size or player_x < obj[0] + object_size < player_x + player_size) and obj[1] + object_size > player_y:
+            running = False  # Game over on collision
+    
+    # Collision detection for power-ups
+    for powerup in powerups[:]:
+        if powerup[1] > HEIGHT:
+            powerups.remove(powerup)
+        elif (player_x < powerup[0] < player_x + player_size or player_x < powerup[0] + object_size < player_x + player_size) and powerup[1] + object_size > player_y:
+            powerups.remove(powerup)
+            score += 5  # Power-ups increase score
+    
+    # Draw player
+    pygame.draw.rect(screen, BLUE, (player_x, player_y, player_size, player_size))
+    
+    # Display score
+    draw_text(f"Score: {score}", 10, 10)
+    
+    # Update display
+    pygame.display.update()
+    clock.tick(30)  # Limit FPS
+
+pygame.quit()
+print("Game Over! Final Score:", score)
