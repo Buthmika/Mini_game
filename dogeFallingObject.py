@@ -56,4 +56,12 @@ while running:
             score += 1  # Increase score for dodging
         elif (player_x < obj[0] < player_x + player_size or player_x < obj[0] + object_size < player_x + player_size) and obj[1] + object_size > player_y:
             running = False  # Game over on collision
+    # Draw player
+    pygame.draw.rect(screen, BLUE, (player_x, player_y, player_size, player_size))
     
+    # Update display
+    pygame.display.update()
+    clock.tick(30)  # Limit FPS
+
+pygame.quit()
+print("Game Over! Score:", score)
