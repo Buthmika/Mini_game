@@ -57,7 +57,10 @@ while running:
     if random.randint(1, 20) == 1:  # Increased chance to spawn objects
         objects.append([random.randint(0, WIDTH - object_size), 0])
     
-  e.draw.rect(screen, RED, (obj[0], obj[1], object_size, object_size))
+    # Move falling objects
+    for obj in objects:
+        obj[1] += object_speed
+        pygame.draw.rect(screen, RED, (obj[0], obj[1], object_size, object_size))
     
     
     for obj in objects[:]:
