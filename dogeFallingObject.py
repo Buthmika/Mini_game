@@ -44,3 +44,16 @@ while running:
     # Spawn falling objects
     if random.randint(1, 30) == 1:  # Random chance to create a new object
         objects.append([random.randint(0, WIDTH - object_size), 0])
+         # Move falling objects
+    for obj in objects:
+        obj[1] += object_speed
+        pygame.draw.rect(screen, RED, (obj[0], obj[1], object_size, object_size))
+    
+    # Collision detection
+    for obj in objects[:]:
+        if obj[1] > HEIGHT:
+            objects.remove(obj)
+            score += 1  # Increase score for dodging
+        elif (player_x < obj[0] < player_x + player_size or player_x < obj[0] + object_size < player_x + player_size) and obj[1] + object_size > player_y:
+            running = False  # Game over on collision
+    
